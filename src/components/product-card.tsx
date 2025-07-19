@@ -75,7 +75,7 @@ export function ProductCard({ product }: ProductCardProps) {
         </CardFooter>
       </Card>
 
-      <DialogContent className="sm:max-w-[600px] grid-cols-1 md:grid-cols-2 gap-8">
+      <DialogContent className="sm:max-w-[600px] grid md:grid-cols-2 gap-8 items-start">
         <div className="relative h-96 w-full md:h-full">
            <Image
             src={product.image}
@@ -85,7 +85,7 @@ export function ProductCard({ product }: ProductCardProps) {
             data-ai-hint="product image"
           />
         </div>
-        <div className="flex flex-col space-y-4">
+        <div className="flex flex-col space-y-4 h-full">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold font-headline">{product.title}</DialogTitle>
           </DialogHeader>
@@ -97,10 +97,10 @@ export function ProductCard({ product }: ProductCardProps) {
                 <span className="text-sm text-muted-foreground">({product.rating.count} ratings)</span>
             </div>
           </div>
-          <p className="text-muted-foreground text-sm flex-grow overflow-auto max-h-48">
-              {product.description}
-          </p>
-          <DialogFooter className="sm:justify-start flex-col items-stretch gap-4">
+          <div className="text-muted-foreground text-sm flex-grow overflow-y-auto max-h-48 pr-2">
+              <p>{product.description}</p>
+          </div>
+          <DialogFooter className="sm:justify-start flex-col items-stretch gap-4 mt-auto">
              <p className="text-3xl font-bold text-foreground">
                 KES {product.price.toFixed(2)}
              </p>
