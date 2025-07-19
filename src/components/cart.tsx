@@ -107,7 +107,7 @@ export function Cart() {
                         </Button>
                       </div>
                     </div>
-                    <div className="flex flex-col items-end w-24 flex-shrink-0">
+                    <div className="flex flex-col items-end justify-between self-stretch flex-shrink-0">
                        <p className="font-semibold text-sm text-right">
                           KES {(item.price * item.quantity).toFixed(2)}
                        </p>
