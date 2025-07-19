@@ -75,7 +75,7 @@ export function ProductCard({ product }: ProductCardProps) {
         </CardFooter>
       </Card>
 
-      <DialogContent className="sm:max-w-[600px] grid md:grid-cols-2 gap-8 items-start">
+      <DialogContent className="sm:max-w-[650px] grid md:grid-cols-2 gap-8 items-start">
         <div className="relative h-96 w-full md:h-full">
            <Image
             src={product.image}
@@ -97,7 +97,7 @@ export function ProductCard({ product }: ProductCardProps) {
                 <span className="text-sm text-muted-foreground">({product.rating.count} ratings)</span>
             </div>
           </div>
-          <div className="text-muted-foreground text-sm flex-grow overflow-y-auto max-h-48 pr-2">
+          <div className="text-muted-foreground text-sm flex-grow overflow-y-auto max-h-32 pr-2">
               <p>{product.description}</p>
           </div>
           <DialogFooter className="sm:justify-start flex-col items-stretch gap-4 mt-auto">
