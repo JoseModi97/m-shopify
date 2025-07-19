@@ -2,6 +2,7 @@
 
 import { Store } from "lucide-react";
 import { Cart } from "@/components/cart";
+import { ThemeToggle } from "./theme-toggle";
 
 export function Header() {
   return (
@@ -12,6 +13,7 @@ export function Header() {
           <span className="font-bold text-lg font-headline">M-Shopify</span>
         </div>
         <div className="flex flex-1 items-center justify-end space-x-2">
+          <ThemeToggle />
           <Cart />
         </div>
       </div>
