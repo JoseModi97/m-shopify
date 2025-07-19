@@ -82,7 +82,7 @@ export function Cart() {
                         className="object-contain"
                       />
                     </div>
-                    <div className="flex-1">
+                    <div className="flex-1 min-w-0">
                       <p className="font-medium text-sm truncate">{item.title}</p>
                       <p className="text-xs text-muted-foreground">
                         KES {item.price.toFixed(2)}
@@ -160,7 +160,7 @@ export function Cart() {
           <span className="sr-only">Open cart</span>
         </Button>
       </SheetTrigger>
-      <SheetContent className="flex w-full flex-col pr-0 sm:max-w-lg">
+      <SheetContent className="flex w-full flex-col p-0 sm:max-w-lg">
         <CartContent />
       </SheetContent>
     </Sheet>
