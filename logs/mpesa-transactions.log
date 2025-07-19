@@ -64,3 +64,25 @@
   "CustomerMessage": "Success. Request accepted for processing"
 }
 2025-07-19T14:56:14.555Z - SUCCESS: STK Push for +254799213371 initiated successfully.
+2025-07-19T15:41:58.133Z - Attempting payment for Phone: +254799213371, Amount: 2230
+2025-07-19T15:41:59.009Z - Request Body: {
+  "BusinessShortCode": "174379",
+  "Password": "MTc0Mzc5YmZiMjc5ZjlhYTliZGJjZjE1OGU5N2RkNzFhNDY3Y2QyZTBjODkzMDU5YjEwZjc4ZTZiNzJhZGExZWQyYzkxOTIwMjUwNzE5MTU0MTU5",
+  "Timestamp": "20250719154159",
+  "TransactionType": "CustomerPayBillOnline",
+  "Amount": 2230,
+  "PartyA": "254799213371",
+  "PartyB": "174379",
+  "PhoneNumber": "254799213371",
+  "CallBackURL": "https://yourdomain.com/api/daraja-callback",
+  "AccountReference": "M-Shopify",
+  "TransactionDesc": "Payment for order worth KES 2230"
+}
+2025-07-19T15:41:59.426Z - Response Body: {
+  "MerchantRequestID": "4585-4594-839f-309948e2163139335",
+  "CheckoutRequestID": "ws_CO_19072025184157137799213371",
+  "ResponseCode": "0",
+  "ResponseDescription": "Success. Request accepted for processing",
+  "CustomerMessage": "Success. Request accepted for processing"
+}
+2025-07-19T15:41:59.453Z - SUCCESS: STK Push for +254799213371 initiated successfully.
