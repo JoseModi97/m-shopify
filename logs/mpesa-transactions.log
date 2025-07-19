@@ -20,3 +20,47 @@
   "CustomerMessage": "Success. Request accepted for processing"
 }
 2025-07-19T14:46:16.959Z - SUCCESS: STK Push for +254799213371 initiated successfully.
+2025-07-19T14:48:29.851Z - Attempting payment for Phone: +254799213371, Amount: 15.99
+2025-07-19T14:48:30.418Z - Request Body: {
+  "BusinessShortCode": "174379",
+  "Password": "MTc0Mzc5YmZiMjc5ZjlhYTliZGJjZjE1OGU5N2RkNzFhNDY3Y2QyZTBjODkzMDU5YjEwZjc4ZTZiNzJhZGExZWQyYzkxOTIwMjUwNzE5MTc0ODMw",
+  "Timestamp": "20250719174830",
+  "TransactionType": "CustomerPayBillOnline",
+  "Amount": 16,
+  "PartyA": "254799213371",
+  "PartyB": "174379",
+  "PhoneNumber": "254799213371",
+  "CallBackURL": "https://yourdomain.com/api/daraja-callback",
+  "AccountReference": "M-Shopify",
+  "TransactionDesc": "Payment for order worth KES 16"
+}
+2025-07-19T14:48:31.044Z - Response Body: {
+  "MerchantRequestID": "7c9c-4d2f-b134-81e738590abf38891",
+  "CheckoutRequestID": "ws_CO_19072025175103912799213371",
+  "ResponseCode": "0",
+  "ResponseDescription": "Success. Request accepted for processing",
+  "CustomerMessage": "Success. Request accepted for processing"
+}
+2025-07-19T14:48:31.050Z - SUCCESS: STK Push for +254799213371 initiated successfully.
+2025-07-19T14:56:13.350Z - Attempting payment for Phone: +254799213371, Amount: 111.3
+2025-07-19T14:56:13.905Z - Request Body: {
+  "BusinessShortCode": "174379",
+  "Password": "MTc0Mzc5YmZiMjc5ZjlhYTliZGJjZjE1OGU5N2RkNzFhNDY3Y2QyZTBjODkzMDU5YjEwZjc4ZTZiNzJhZGExZWQyYzkxOTIwMjUwNzE5MTc1NjEz",
+  "Timestamp": "20250719175613",
+  "TransactionType": "CustomerPayBillOnline",
+  "Amount": 111,
+  "PartyA": "254799213371",
+  "PartyB": "174379",
+  "PhoneNumber": "254799213371",
+  "CallBackURL": "https://yourdomain.com/api/daraja-callback",
+  "AccountReference": "M-Shopify",
+  "TransactionDesc": "Payment for order worth KES 111"
+}
+2025-07-19T14:56:14.551Z - Response Body: {
+  "MerchantRequestID": "7c9c-4d2f-b134-81e738590abf38970",
+  "CheckoutRequestID": "ws_CO_19072025175619141799213371",
+  "ResponseCode": "0",
+  "ResponseDescription": "Success. Request accepted for processing",
+  "CustomerMessage": "Success. Request accepted for processing"
+}
+2025-07-19T14:56:14.555Z - SUCCESS: STK Push for +254799213371 initiated successfully.
