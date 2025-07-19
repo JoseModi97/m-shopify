@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { Minus, Plus, ShoppingCart, Trash2 } from "lucide-react";
+import { Minus, Plus, ShoppingCart, X } from "lucide-react";
 import { CheckoutForm } from "./checkout-form";
 import { useState } from "react";
 import { Badge } from "./ui/badge";
@@ -71,54 +71,55 @@ export function Cart() {
         {cartItems.length > 0 ? (
           <>
             <ScrollArea className="flex-1">
-              <div className="flex flex-col gap-4 p-4">
+              <div className="flex flex-col gap-6 p-4">
                 {cartItems.map((item) => (
-                  <div key={item.id} className="flex items-center gap-4">
-                    <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-md">
+                  <div key={item.id} className="flex items-start gap-4">
+                    <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-md group">
                       <Image
                         src={item.image}
                         alt={item.title}
                         fill
                         className="object-contain"
                       />
+                       <Button
+                          variant="destructive"
+                          size="icon"
+                          className="absolute -top-2 -left-2 h-6 w-6 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                          onClick={() => removeFromCart(item.id)}
+                          >
+                          <X className="h-4 w-4" />
+                          <span className="sr-only">Remove item</span>
+                      </Button>
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="font-medium text-sm truncate">{item.title}</p>
                       <p className="text-xs text-muted-foreground">
                         KES {item.price.toFixed(2)}
                       </p>
-                      <div className="flex items-center gap-2 mt-2">
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="h-6 w-6"
-                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                        >
-                          <Minus className="h-3 w-3" />
-                        </Button>
-                        <span className="w-5 text-center text-sm">{item.quantity}</span>
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="h-6 w-6"
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                        >
-                          <Plus className="h-3 w-3" />
-                        </Button>
-                      </div>
-                    </div>
-                    <div className="flex flex-col items-end justify-between self-stretch flex-shrink-0">
-                       <p className="font-semibold text-sm text-right">
-                          KES {(item.price * item.quantity).toFixed(2)}
-                       </p>
-                      <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8 text-muted-foreground hover:text-destructive"
-                          onClick={() => removeFromCart(item.id)}
+                       <div className="flex items-center justify-between mt-2">
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="h-6 w-6"
+                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
                           >
-                          <Trash2 className="h-4 w-4" />
-                      </Button>
+                            <Minus className="h-3 w-3" />
+                          </Button>
+                          <span className="w-5 text-center text-sm">{item.quantity}</span>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="h-6 w-6"
+                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          >
+                            <Plus className="h-3 w-3" />
+                          </Button>
+                        </div>
+                         <p className="font-semibold text-sm text-right">
+                            KES {(item.price * item.quantity).toFixed(2)}
+                         </p>
+                       </div>
                     </div>
                   </div>
                 ))}
