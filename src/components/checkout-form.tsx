@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
-import { PhoneInput, defaultCountries, parsePhoneNumber } from "react-international-phone";
+import { PhoneInput, parsePhoneNumber } from "react-international-phone";
 import "react-international-phone/style.css";
 
 const checkoutSchema = z.object({
