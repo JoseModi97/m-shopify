@@ -64,7 +64,7 @@ export function Cart() {
                   <div className="flex-1">
                     <p className="font-medium text-sm truncate">{item.title}</p>
                     <p className="text-xs text-muted-foreground">
-                      ${item.price.toFixed(2)}
+                      KES {item.price.toFixed(2)}
                     </p>
                     <div className="flex items-center gap-2 mt-2">
                       <Button
@@ -88,7 +88,7 @@ export function Cart() {
                   </div>
                   <div className="flex flex-col items-end">
                      <p className="font-semibold text-sm">
-                        ${(item.price * item.quantity).toFixed(2)}
+                        KES {(item.price * item.quantity).toFixed(2)}
                      </p>
                     <Button
                         variant="ghost"
@@ -108,7 +108,7 @@ export function Cart() {
             <div className="w-full space-y-4">
                 <div className="flex justify-between items-center font-bold text-lg">
                     <span>Total</span>
-                    <span>${cartTotal.toFixed(2)}</span>
+                    <span>KES {cartTotal.toFixed(2)}</span>
                 </div>
                 <CheckoutForm onPaymentSuccess={onPaymentSuccess} />
             </div>

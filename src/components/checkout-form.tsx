@@ -8,7 +8,7 @@ import { initiateMpesaPayment } from "@/app/actions";
 import { useCart } from "@/context/cart-context";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 
@@ -40,6 +40,10 @@ export function CheckoutForm({ onPaymentSuccess }: CheckoutFormProps) {
 
   async function onSubmit(data: CheckoutFormValues) {
     setIsLoading(true);
+    toast({
+        title: "Processing Payment",
+        description: "Please wait while we initiate the M-Pesa transaction. You will receive a prompt on your phone.",
+    });
     try {
       const result = await initiateMpesaPayment(data.phone, cartTotal);
       if (result.success) {
@@ -71,13 +75,16 @@ export function CheckoutForm({ onPaymentSuccess }: CheckoutFormProps) {
               <FormControl>
                 <Input placeholder="254712345678" {...field} disabled={isLoading} />
               </FormControl>
+              <FormDescription>
+                You will receive a push notification to complete the payment.
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full bg-accent hover:bg-accent/90" disabled={isLoading}>
+        <Button type="submit" className="w-full bg-accent hover:bg-accent/90" disabled={isLoading || cartTotal === 0}>
           {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {isLoading ? 'Processing...' : `Pay $${cartTotal.toFixed(2)} with M-Pesa`}
+          {isLoading ? 'Processing...' : `Pay KES ${cartTotal.toFixed(2)} with M-Pesa`}
         </Button>
       </form>
     </Form>

@@ -50,7 +50,7 @@ export function ProductCard({ product }: ProductCardProps) {
           {product.title}
         </CardTitle>
         <CardDescription className="mt-2 text-lg font-semibold text-foreground">
-          ${product.price.toFixed(2)}
+          KES {product.price.toFixed(2)}
         </CardDescription>
       </CardContent>
       <CardFooter className="p-4 pt-0">
