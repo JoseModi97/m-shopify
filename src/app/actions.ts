@@ -2,6 +2,21 @@
 
 import "dotenv/config";
 import { format } from 'date-fns';
+import fs from 'fs/promises';
+import path from 'path';
+
+// Helper function to log messages to a file
+async function logTransaction(logMessage: string) {
+  try {
+    const logDir = path.join(process.cwd(), 'logs');
+    await fs.mkdir(logDir, { recursive: true });
+    const logFile = path.join(logDir, 'mpesa-transactions.log');
+    const timestamp = new Date().toISOString();
+    await fs.appendFile(logFile, `${timestamp} - ${logMessage}\n`);
+  } catch (error) {
+    console.error('Failed to write to log file:', error);
+  }
+}
 
 // Helper function to get Daraja API access token
 async function getDarajaToken(consumerKey: string, consumerSecret: string): Promise<string | null> {
@@ -20,6 +35,7 @@ async function getDarajaToken(consumerKey: string, consumerSecret: string): Prom
     if (!response.ok) {
         const errorText = await response.text();
         console.error("Failed to get Daraja token:", response.status, errorText);
+        await logTransaction(`ERROR: Failed to get Daraja token. Status: ${response.status}, Body: ${errorText}`);
         return null;
     }
 
@@ -27,12 +43,13 @@ async function getDarajaToken(consumerKey: string, consumerSecret: string): Prom
     return data.access_token;
   } catch (error) {
     console.error("Error fetching Daraja token:", error);
+    await logTransaction(`ERROR: Exception fetching Daraja token: ${error}`);
     return null;
   }
 }
 
 export async function initiateMpesaPayment(phone: string, amount: number): Promise<{ success: boolean; error?: string }> {
-  console.log(`Initiating M-Pesa payment for ${phone} with amount ${amount}`);
+  await logTransaction(`Attempting payment for Phone: ${phone}, Amount: ${amount}`);
 
   // M-Pesa requires the phone number without the leading '+'
   const formattedPhone = phone.startsWith('+') ? phone.substring(1) : phone;
@@ -44,7 +61,9 @@ export async function initiateMpesaPayment(phone: string, amount: number): Promi
   const callbackURL = process.env.DARAJA_CALLBACK_URL;
 
   if (!consumerKey || !consumerSecret || !shortCode || !passkey || !callbackURL) {
-    console.error("Daraja credentials are not set in the environment variables.");
+    const errorMessage = "Daraja credentials are not set in the environment variables.";
+    console.error(errorMessage);
+    await logTransaction(`ERROR: ${errorMessage}`);
     return { success: false, error: "Server configuration error. Please contact support." };
   }
 
@@ -73,6 +92,7 @@ export async function initiateMpesaPayment(phone: string, amount: number): Promi
   };
 
   try {
+    await logTransaction(`Request Body: ${JSON.stringify(requestBody, null, 2)}`);
     const response = await fetch("https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest", {
         method: 'POST',
         headers: {
@@ -83,19 +103,21 @@ export async function initiateMpesaPayment(phone: string, amount: number): Promi
     });
 
     const result = await response.json();
+    await logTransaction(`Response Body: ${JSON.stringify(result, null, 2)}`);
 
     if (response.ok && result.ResponseCode === '0') {
       console.log("STK Push initiated successfully:", result);
-      // The actual success is asynchronous and comes via the callback URL.
-      // For the user, a successful initiation is what matters at this stage.
+      await logTransaction(`SUCCESS: STK Push for ${phone} initiated successfully.`);
       return { success: true };
     } else {
       console.error("STK Push initiation failed:", result);
       const errorMessage = result.errorMessage || "The payment could not be processed. Please try again.";
+      await logTransaction(`FAILURE: STK Push for ${phone} failed. Reason: ${errorMessage}`);
       return { success: false, error: errorMessage };
     }
   } catch (error: any) {
     console.error("An error occurred during STK Push request:", error);
+    await logTransaction(`FATAL: An exception occurred during STK Push for ${phone}. Error: ${error.message}`);
     return { success: false, error: "An unexpected error occurred. Please try again." };
   }
 }
