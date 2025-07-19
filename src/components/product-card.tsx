@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { PlusCircle, Star } from "lucide-react";
+import { Plus, Minus, PlusCircle, Star } from "lucide-react";
 import type { Product } from "@/types";
 import { useCart } from "@/context/cart-context";
 import { Button } from "@/components/ui/button";
@@ -24,6 +24,8 @@ import {
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { Badge } from "./ui/badge";
+import { useState } from "react";
+import { Input } from "./ui/input";
 
 interface ProductCardProps {
   product: Product;
@@ -32,17 +34,34 @@ interface ProductCardProps {
 export function ProductCard({ product }: ProductCardProps) {
   const { addToCart } = useCart();
   const { toast } = useToast();
+  const [quantity, setQuantity] = useState(1);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleAddToCart = () => {
-    addToCart(product);
+    addToCart(product, quantity);
     toast({
         title: "Added to cart",
-        description: `"${product.title}" has been added to your cart.`,
+        description: `${quantity} x "${product.title}" has been added to your cart.`,
     });
+    setQuantity(1); // Reset quantity after adding
+    setIsDialogOpen(false); // Close dialog after adding
+  }
+
+  const handleQuantityChange = (newQuantity: number) => {
+    if (newQuantity >= 1) {
+      setQuantity(newQuantity);
+    }
+  };
+
+  const onOpenChange = (open: boolean) => {
+    setIsDialogOpen(open);
+    if (!open) {
+      setQuantity(1); // Reset quantity when dialog is closed
+    }
   }
 
   return (
-    <Dialog>
+    <Dialog open={isDialogOpen} onOpenChange={onOpenChange}>
       <Card className="flex flex-col h-full overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
         <DialogTrigger asChild>
           <div className="cursor-pointer">
@@ -69,7 +88,13 @@ export function ProductCard({ product }: ProductCardProps) {
           </div>
         </DialogTrigger>
         <CardFooter className="p-4 pt-0">
-          <Button className="w-full" onClick={handleAddToCart}>
+          <Button className="w-full" onClick={() => {
+            addToCart(product, 1);
+            toast({
+              title: "Added to cart",
+              description: `"${product.title}" has been added to your cart.`,
+            });
+          }}>
             <PlusCircle className="mr-2 h-5 w-5" /> Add to Cart
           </Button>
         </CardFooter>
@@ -101,9 +126,36 @@ export function ProductCard({ product }: ProductCardProps) {
               <p>{product.description}</p>
           </div>
           <DialogFooter className="sm:justify-start flex-col items-stretch gap-4 mt-auto">
-             <p className="text-3xl font-bold text-foreground">
-                KES {product.price.toFixed(2)}
-             </p>
+             <div className="flex items-center justify-between">
+                <p className="text-3xl font-bold text-foreground">
+                    KES {(product.price * quantity).toFixed(2)}
+                </p>
+                <div className="flex items-center gap-2">
+                    <Button
+                        variant="outline"
+                        size="icon"
+                        className="h-8 w-8"
+                        onClick={() => handleQuantityChange(quantity - 1)}
+                    >
+                        <Minus className="h-4 w-4" />
+                    </Button>
+                    <Input 
+                        type="number"
+                        className="h-8 w-14 text-center"
+                        value={quantity}
+                        onChange={(e) => handleQuantityChange(parseInt(e.target.value, 10) || 1)}
+                        min="1"
+                    />
+                    <Button
+                        variant="outline"
+                        size="icon"
+                        className="h-8 w-8"
+                        onClick={() => handleQuantityChange(quantity + 1)}
+                    >
+                        <Plus className="h-4 w-4" />
+                    </Button>
+                </div>
+             </div>
             <Button size="lg" onClick={handleAddToCart}>
               <PlusCircle className="mr-2 h-5 w-5" /> Add to Cart
             </Button>

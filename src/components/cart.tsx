@@ -19,6 +19,7 @@ import { Minus, Plus, ShoppingCart, X } from "lucide-react";
 import { CheckoutForm } from "./checkout-form";
 import { useState } from "react";
 import { Badge } from "./ui/badge";
+import { Input } from "./ui/input";
 
 export function Cart() {
   const { cartItems, updateQuantity, removeFromCart, cartTotal, cartCount } = useCart();
@@ -101,19 +102,25 @@ export function Cart() {
                           <Button
                             variant="outline"
                             size="icon"
-                            className="h-6 w-6"
+                            className="h-8 w-8"
                             onClick={() => updateQuantity(item.id, item.quantity - 1)}
                           >
-                            <Minus className="h-3 w-3" />
+                            <Minus className="h-4 w-4" />
                           </Button>
-                          <span className="w-5 text-center text-sm">{item.quantity}</span>
+                          <Input
+                            type="number"
+                            value={item.quantity}
+                            onChange={(e) => updateQuantity(item.id, parseInt(e.target.value, 10) || 1)}
+                            className="h-8 w-14 text-center"
+                            min="1"
+                           />
                           <Button
                             variant="outline"
                             size="icon"
-                            className="h-6 w-6"
+                            className="h-8 w-8"
                             onClick={() => updateQuantity(item.id, item.quantity + 1)}
                           >
-                            <Plus className="h-3 w-3" />
+                            <Plus className="h-4 w-4" />
                           </Button>
                         </div>
                          <p className="font-semibold text-sm text-right">
