@@ -17,7 +17,7 @@ const phoneRegex = new RegExp(
 );
 
 const checkoutSchema = z.object({
-  phone: z.string().regex(phoneRegex, "Must be a valid Safaricom number (e.g., 254712345678)"),
+  phone: z.string().regex(phoneRegex, "Must be a valid Safaricom number starting with 254 (e.g., 254712345678)"),
 });
 
 type CheckoutFormValues = z.infer<typeof checkoutSchema>;
@@ -76,7 +76,7 @@ export function CheckoutForm({ onPaymentSuccess }: CheckoutFormProps) {
                 <Input placeholder="254712345678" {...field} disabled={isLoading} />
               </FormControl>
               <FormDescription>
-                You will receive a push notification to complete the payment.
+                Use format 254... You will receive a push notification to complete the payment.
               </FormDescription>
               <FormMessage />
             </FormItem>
