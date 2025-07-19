@@ -10,18 +10,12 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
-import { PhoneInput, parsePhoneNumber } from "react-international-phone";
+import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 
+// Updated validation schema
 const checkoutSchema = z.object({
-  phone: z.string().refine((phone) => {
-    try {
-        // The Mpesa API will do the final validation.
-        return parsePhoneNumber(phone).isValid;
-    } catch {
-        return false
-    }
-  }, "Please enter a valid phone number."),
+  phone: z.string().min(10, "Please enter a valid phone number."),
 });
 
 type CheckoutFormValues = z.infer<typeof checkoutSchema>;
