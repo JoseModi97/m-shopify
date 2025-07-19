@@ -7,17 +7,23 @@ import { z } from "zod";
 import { initiateMpesaPayment } from "@/app/actions";
 import { useCart } from "@/context/cart-context";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
-
-const phoneRegex = new RegExp(
-  /^254(7\d{8}|1\d{8})$/
-);
+import { PhoneInput, defaultCountries, parsePhoneNumber } from "react-international-phone";
+import "react-international-phone/style.css";
 
 const checkoutSchema = z.object({
-  phone: z.string().regex(phoneRegex, "Must be a valid Safaricom number starting with 254 (e.g., 254712345678)"),
+  phone: z.string().refine((phone) => {
+    try {
+        // We just need to know if it's a valid phone number for *any* country.
+        // The component itself handles country-specific validation visually.
+        // The Mpesa API will do the final validation.
+        return parsePhoneNumber(phone).isValid;
+    } catch {
+        return false
+    }
+  }, "Please enter a valid phone number."),
 });
 
 type CheckoutFormValues = z.infer<typeof checkoutSchema>;
@@ -42,7 +48,7 @@ export function CheckoutForm({ onPaymentSuccess }: CheckoutFormProps) {
     setIsLoading(true);
     toast({
         title: "Processing Payment",
-        description: "Please wait while we initiate the M-Pesa transaction. You will receive a prompt on your phone.",
+        description: "Please wait while we initiate the M-Pesa transaction. You may receive a prompt on your phone.",
     });
     try {
       const result = await initiateMpesaPayment(data.phone, cartTotal);
@@ -71,12 +77,18 @@ export function CheckoutForm({ onPaymentSuccess }: CheckoutFormProps) {
           name="phone"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>M-Pesa Phone Number</FormLabel>
+              <FormLabel>Phone Number</FormLabel>
               <FormControl>
-                <Input placeholder="254712345678" {...field} disabled={isLoading} />
+                <PhoneInput
+                  {...field}
+                  defaultCountry="ke"
+                  inputClassName="!w-full"
+                  className="w-full"
+                  disabled={isLoading}
+                />
               </FormControl>
               <FormDescription>
-                Use format 254... You will receive a push notification to complete the payment.
+                M-Pesa payments are available for supported countries.
               </FormDescription>
               <FormMessage />
             </FormItem>

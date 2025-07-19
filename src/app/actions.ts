@@ -14,6 +14,7 @@ async function getDarajaToken(consumerKey: string, consumerSecret: string): Prom
       headers: {
         "Authorization": auth,
       },
+      cache: 'no-cache',
     });
 
     if (!response.ok) {
@@ -31,7 +32,10 @@ async function getDarajaToken(consumerKey: string, consumerSecret: string): Prom
 }
 
 export async function initiateMpesaPayment(phone: string, amount: number): Promise<{ success: boolean; error?: string }> {
-  console.log(`Initiating real M-Pesa payment for ${phone} with amount ${amount}`);
+  console.log(`Initiating M-Pesa payment for ${phone} with amount ${amount}`);
+
+  // M-Pesa requires the phone number without the leading '+'
+  const formattedPhone = phone.startsWith('+') ? phone.substring(1) : phone;
 
   const consumerKey = process.env.DARAJA_CONSUMER_KEY;
   const consumerSecret = process.env.DARAJA_CONSUMER_SECRET;
@@ -60,9 +64,9 @@ export async function initiateMpesaPayment(phone: string, amount: number): Promi
     Timestamp: timestamp,
     TransactionType: "CustomerPayBillOnline",
     Amount: roundedAmount,
-    PartyA: phone,
+    PartyA: formattedPhone,
     PartyB: shortCode,
-    PhoneNumber: phone,
+    PhoneNumber: formattedPhone,
     CallBackURL: callbackURL,
     AccountReference: "M-Shopify",
     TransactionDesc: `Payment for order worth KES ${roundedAmount}`,
