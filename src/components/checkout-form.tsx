@@ -16,8 +16,6 @@ import "react-international-phone/style.css";
 const checkoutSchema = z.object({
   phone: z.string().refine((phone) => {
     try {
-        // We just need to know if it's a valid phone number for *any* country.
-        // The component itself handles country-specific validation visually.
         // The Mpesa API will do the final validation.
         return parsePhoneNumber(phone).isValid;
     } catch {
